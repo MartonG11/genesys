@@ -9,3 +9,9 @@ export const getCharacters = async (page = 1, term?: string) => {
 
   return response.data
 }
+
+export const getSingleCharacter = async (id: number) => {
+  const response = await client.get(`/${id}`)
+
+  return response.data
+}
