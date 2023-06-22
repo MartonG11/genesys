@@ -1,17 +1,26 @@
-import { useState } from 'react'
+import { ChangeEvent, useState } from 'react'
 import { useQuery } from 'react-query'
 import { getCharacters } from '../api/axios'
 
 const Home = () => {
-  const term = ''
-  const [currentPage, setCurrentPage] = useState(1)
+  const [searchTerm, setSearchTerm] = useState<string>('')
+  const [currentPage, setCurrentPage] = useState<number>(1)
+
   const { data, isLoading, error } = useQuery(
-    ['characters', currentPage, term],
-    () => getCharacters(currentPage, term),
+    ['characters', currentPage, searchTerm],
+    () => getCharacters(currentPage, searchTerm),
     {
       keepPreviousData: true,
     }
   )
+
+  const handleSearch = (event: ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(event.target.value)
+  }
+
+  const clearSearch = () => {
+    setSearchTerm('')
+  }
 
   const handlePrevPage = () => {
     setCurrentPage((prevPage: number) => prevPage - 1)
@@ -23,6 +32,17 @@ const Home = () => {
 
   return (
     <div>
+      <div>
+        <input
+          type="text"
+          value={searchTerm}
+          onChange={handleSearch}
+          placeholder="Search character..."
+        />
+        <button onClick={clearSearch} disabled={!searchTerm.length}>
+          X
+        </button>
+      </div>
       <h2>Characters:</h2>
       {data.results.map((character: any) => (
         <p key={character.id}>{character.name}</p>
