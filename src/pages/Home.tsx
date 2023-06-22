@@ -44,7 +44,7 @@ const Home = () => {
         </button>
       </div>
       <h2>Characters:</h2>
-      {data.results.map((character: any) => (
+      {data?.results.map((character: any) => (
         <p key={character.id}>{character.name}</p>
       ))}
       <button onClick={handlePrevPage} disabled={currentPage === 1}>
@@ -52,7 +52,7 @@ const Home = () => {
       </button>
       <button
         onClick={handleNextPage}
-        disabled={data.info.pages === currentPage}
+        disabled={data?.info.pages === currentPage}
       >
         Next Page
       </button>
