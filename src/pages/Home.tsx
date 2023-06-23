@@ -1,8 +1,11 @@
+import { Clear } from '@mui/icons-material'
+import { Box, Button, IconButton, TextField } from '@mui/material'
 import { ChangeEvent, useState } from 'react'
 import { useQuery } from 'react-query'
-import { Link } from 'react-router-dom'
+
 import { getCharacters } from '../api/axios'
-import { Character } from '../types/Character'
+import Layout from '../components/Layout'
+import TableComponent from '../components/Table'
 import { Response } from '../types/Response'
 
 const Home = () => {
@@ -46,37 +49,54 @@ const Home = () => {
   }
 
   return (
-    <div>
-      <div>
-        <input
-          type="text"
-          value={searchTerm}
-          onChange={handleSearch}
-          placeholder="Search character..."
-        />
-        <button onClick={clearSearch} disabled={!searchTerm.length}>
-          X
-        </button>
-      </div>
-      <h2>Characters:</h2>
-      {data?.results.map((character: Character) => (
-        <div key={character.id}>
-          <Link to={`/profile/${character.id}`}>
-            <p>{character.name}</p>
-          </Link>
-        </div>
-      ))}
-      <button onClick={handlePrevPage} disabled={currentPage === 1}>
-        Previous Page
-      </button>
-      <button
-        onClick={handleNextPage}
-        disabled={data?.info.pages === currentPage}
+    <Layout>
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          minWidth: '800px',
+          mb: 1,
+        }}
       >
-        Next Page
-      </button>
-      <h4>Current page: {currentPage}</h4>
-    </div>
+        <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
+          <TextField
+            label="Search character..."
+            variant="outlined"
+            type="text"
+            value={searchTerm}
+            onChange={handleSearch}
+            size="small"
+          />
+          <IconButton
+            onClick={clearSearch}
+            disabled={!searchTerm.length}
+            aria-label="Clear"
+          >
+            <Clear />
+          </IconButton>
+        </Box>
+        <Box sx={{ display: 'flex', gap: 1 }}>
+          <Button
+            onClick={handlePrevPage}
+            disabled={currentPage === 1}
+            variant="contained"
+          >
+            Previous
+          </Button>
+          <Button
+            onClick={handleNextPage}
+            disabled={data?.info.pages === currentPage}
+            variant="contained"
+          >
+            Next
+          </Button>
+        </Box>
+      </Box>
+      <Box sx={{ maxHeight: '600px', overflowY: 'scroll' }}>
+        <TableComponent data={data.results} />
+      </Box>
+    </Layout>
   )
 }
 
