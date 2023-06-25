@@ -4,7 +4,6 @@ import { ChangeEvent, useState } from 'react'
 import { useQuery } from 'react-query'
 
 import { getCharacters } from '../api/axios'
-import Layout from '../components/Layout'
 import TableComponent from '../components/Table'
 import { Response } from '../types/Response'
 
@@ -49,7 +48,7 @@ const Home = () => {
   }
 
   return (
-    <Layout>
+    <>
       <Box
         sx={{
           display: 'flex',
@@ -96,7 +95,7 @@ const Home = () => {
       <Box sx={{ maxHeight: '600px', overflowY: 'scroll' }}>
         <TableComponent data={data.results} />
       </Box>
-    </Layout>
+    </>
   )
 }
 
